@@ -1,0 +1,9 @@
+clouds:
+  devstack:
+    auth:
+      auth_url: http://127.0.0.1/identity/
+      username: Watcher
+      password: secret
+      user_domain_name: Default
+      project_domain_name: Default
+    region_name: RegionOne
