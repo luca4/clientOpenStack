@@ -32,13 +32,13 @@ while True:
     for service in services:
         service = service.to_dict()
         name = service["name"]
-        if name in ("glance", "cinder", "nova", "placement", "neutron", "keystone"):
+        if name in ("glance", "cinder", "nova", "neutron", "keystone"):
             print(f"{i}) {name:10}", "->", "Enabled" if service["is_enabled"] is True else "Disabled")
             i += 1
 
     # Get chosen value and check it
     try:
-        service_number = 5  # int(input("\nInsert service number to get specific info (0 to exit program):\n"))
+        service_number = int(input("\nInsert service number to get specific info (0 to exit program):\n"))
     except ValueError:
         print("Error: Insert integer value!\n")
         continue
@@ -52,19 +52,17 @@ while True:
     if service_number == 0:
         break
     elif service_number == 1:
-        infoObt.print_glance_info()
-    elif service_number == 2:
-        infoObt.print_cinder_info()
-    elif service_number == 3:
-        infoObt.print_placement_info()
-    elif service_number == 4:
         infoObt.print_neutron_info()
-    elif service_number == 5:
-        infoObt.print_nova_info()
-    elif service_number == 6:
+    elif service_number == 2:
         infoObt.print_keystone_info()
+    elif service_number == 3:
+        infoObt.print_nova_info()
+    elif service_number == 4:
+        infoObt.print_glance_info()
+    elif service_number == 5:
+        infoObt.print_cinder_info()
 
-    break;  # TODO only for development
+    #break;  # TODO only for development
 
 """servers = conn.compute.servers()
 for server in servers:
