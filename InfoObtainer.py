@@ -24,8 +24,23 @@ class InfoObtainer:
 
     def print_nova_info(self):
         """ Print nova service info """
-        # compute
-        pass
+
+        print("\nServer list:")
+        has_elements = False
+        for s in self.connection.compute.servers():
+            print(f"Name:{s.name}  Status:{s.status}  Description:{s.description}  Image id:{s.image.id}  Flavor name:{s.flavor.get('original_name')}")
+            has_elements = True
+        if not has_elements:
+            print("No servers found!")
+
+        print("\nAvailable flavors:")
+        has_elements = False
+        for f in self.connection.compute.flavors():
+            print(f"ID:{f.id:3}  Name:{f.name:9}   RAM:{f.ram:5} MB   Disk:{f.disk:3} GB   Virtual CPUs:{f.vcpus}  Is public:{f.to_dict().get('os-flavor-access')}")
+            has_elements = True
+        if not has_elements:
+            print("No flavors found!")
+
 
     def print_glance_info(self):
         """ Print glance service info """

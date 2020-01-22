@@ -1,16 +1,30 @@
-import openstack, os
+import openstack
+from openstack.exceptions import SDKException
+
 from InfoObtainer import InfoObtainer
+import os
+import sys
+
 
 # Ottiene l'id del progetto da visualizzare
 # project_name = input("Inserisci il nome del progetto:")
 
-conn = openstack.connection.from_config(cloud="devstack", project_name="Project_1")
+try:
+    conn = openstack.connection.from_config(cloud="devstack", project_name="Project_2")
+except SDKException:
+    print("Error: a problem occurred while connecting to OpenStack!")
+    sys.exit(1)
 
 print("Successfully connected to OpenStack\n")
 
 infoObt = InfoObtainer(conn)
 while True:
-    services = conn.identity.services()
+    services = None
+    try:
+        services = conn.identity.services()
+    except:  # InternalServerError:
+        print("Error: a problem occurred while connecting to keystone!")
+        sys.exit(1)
 
     # Print services status
     print("\n\nServices status:")
@@ -24,15 +38,13 @@ while True:
 
     # Get chosen value and check it
     try:
-        service_number = int(input("\nInsert service number to get specific info (0 to exit program):\n"))
+        service_number = 5  # int(input("\nInsert service number to get specific info (0 to exit program):\n"))
     except ValueError:
         print("Error: Insert integer value!\n")
         continue
     if service_number < 0 or service_number > 6:
         print("Error: Number must be between 0 and 6\n")
         continue
-
-    service_number = int(service_number)
 
     # Clear the screen
     os.system('clear')
@@ -52,6 +64,7 @@ while True:
     elif service_number == 6:
         infoObt.print_keystone_info()
 
+    break;  # TODO only for development
 
 """servers = conn.compute.servers()
 for server in servers:
